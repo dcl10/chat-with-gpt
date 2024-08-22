@@ -1,6 +1,6 @@
 export default function Home() {
   return (
-    <main className="flex-col items-center justify-between p-24">
+    <main className="flex-col items-center justify-between p-24 content-center">
       <section>
         <div className="py-8 px-4 mx-auto max-w-screen-xl text-center lg:py-16">
           <h1 className="mb-4 text-4xl font-extrabold tracking-tight leading-none text-gray-900 md:text-5xl lg:text-6xl dark:text-white">
@@ -12,10 +12,9 @@ export default function Home() {
         </div>
       </section>
 
-      <div className="mb-32 grid text-center lg:mb-0 lg:w-full lg:max-w-5xl lg:grid-cols-4 lg:text-left">
+      <div className="mb-32 text-center content-center hover:border-gray-300 hover:bg-gray-100 hover:dark:border-neutral-700 hover:dark:bg-neutral-800/30 border border-transparent">
         <a
-          href="https://nextjs.org/docs?utm_source=create-next-app&utm_medium=appdir-template&utm_campaign=create-next-app"
-          className="group rounded-lg border border-transparent px-5 py-4 transition-colors hover:border-gray-300 hover:bg-gray-100 hover:dark:border-neutral-700 hover:dark:bg-neutral-800/30"
+          className="group rounded-lg px-5 py-4 transition-colors content-center"
           target="_blank"
           rel="noopener noreferrer"
         >
@@ -25,7 +24,7 @@ export default function Home() {
               -&gt;
             </span>
           </h2>
-          <p className="m-0 max-w-[30ch] text-sm opacity-50">
+          <p className="m-0 text-sm opacity-50">
             Start a new chat.
           </p>
         </a>
