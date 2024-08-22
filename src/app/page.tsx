@@ -12,11 +12,9 @@ export default function Home() {
         </div>
       </section>
 
-      <div className="mb-32 text-center content-center hover:border-gray-300 hover:bg-gray-100 hover:dark:border-neutral-700 hover:dark:bg-neutral-800/30 border border-transparent">
-        <a
-          className="group rounded-lg px-5 py-4 transition-colors content-center"
-          target="_blank"
-          rel="noopener noreferrer"
+      <div className="mb-32 text-center content-center">
+        <button
+          className="group rounded-lg px-5 py-4 transition-colors content-center hover:border-gray-300 hover:bg-gray-100 hover:dark:border-neutral-700 hover:dark:bg-neutral-800/30 border border-transparent wx-64"
         >
           <h2 className="mb-3 text-2xl font-semibold">
             New chat{" "}
@@ -27,7 +25,7 @@ export default function Home() {
           <p className="m-0 text-sm opacity-50">
             Start a new chat.
           </p>
-        </a>
+        </button>
       </div>
     </main>
   );
