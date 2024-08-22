@@ -7,7 +7,7 @@ export default function Home() {
             Welcome to Chat with GPT
           </h1>
           <p className="mb-8 text-lg font-normal text-gray-500 lg:text-xl sm:px-16 lg:px-48 dark:text-gray-400">
-            A desktop version of ChatGPT using <a href="https://tauri.app/" target="_blank" rel="noopener noreferrer">Tauri</a>
+            A desktop version of ChatGPT using <a href="https://tauri.app/" target="_blank" rel="noopener noreferrer" className="text-blue-600 hover:text-green-600">Tauri</a>
           </p>
         </div>
       </section>
