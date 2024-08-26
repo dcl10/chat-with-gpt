@@ -14,9 +14,9 @@ export default function Home() {
         </div>
       </section>
 
-      <MainMenuItem title="New chat" subtitle="Start a new chat" />
+      <MainMenuItem title="New chat" subtitle="Start a new chat" goTo={"/"}/>
 
-      <MainMenuItem title="Options" subtitle="Configure application from here."/>
+      <MainMenuItem title="Settings" subtitle="Configure application from here." goTo={"/settings"}/>
     </main>
   );
 }
