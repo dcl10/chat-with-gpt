@@ -1,6 +1,6 @@
 "use client";
 import { WebviewWindow } from "@tauri-apps/api/window";
-import { MouseEventHandler, useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 import {
   exists,
   BaseDirectory,
@@ -56,7 +56,7 @@ function EditAPIKey({
       </button>
       <button
         className="rounded-md text-white border-white border-2 min-w-20"
-        onClick={saveSettings}
+        onClick={setEditable}
       >
         Cancel
       </button>
@@ -89,14 +89,6 @@ export default function SettingsPage() {
     setAppWindow(appWindow);
   }
 
-  // Set up app config dir
-  const [configDir, setConfigDir] = useState<string>("");
-  async function setupConfigDir() {
-    const appConfigDir = (await import("@tauri-apps/api/path")).appConfigDir;
-    let configDir = await appConfigDir();
-    setConfigDir(configDir);
-  }
-
   // Set up API key editability
   const [isEditable, setIsEditable] = useState<boolean>(true);
 
@@ -106,7 +98,6 @@ export default function SettingsPage() {
       setAppSettings(settings);
       settings.apiKey ? setIsEditable(false) : setIsEditable(true);
     });
-    setupConfigDir();
   }, []);
 
   function handleAPIKeyChange(newValue: string): void {
