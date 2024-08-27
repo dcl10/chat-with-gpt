@@ -7,6 +7,7 @@ import {
   readTextFile,
   writeTextFile,
 } from "@tauri-apps/api/fs";
+import BackButton from "@/components/ui/back-button";
 
 type AppSettings = {
   apiKey?: string;
@@ -90,7 +91,7 @@ export default function SettingsPage() {
   }
 
   // Set up API key editability
-  const [isEditable, setIsEditable] = useState<boolean>(true);
+  const [isEditable, setIsEditable] = useState<boolean>();
 
   useEffect(() => {
     setupAppWindow();
@@ -116,6 +117,7 @@ export default function SettingsPage() {
 
   return (
     <div className="sm:p-5 lg:p-20 space-y-2 flex flex-col">
+      <BackButton onClick={() => window.location.pathname = "/"}/>
       <h1 className="text-3xl font-semibold pb-4">Settings</h1>
       {isEditable ? (
         <EditAPIKey
