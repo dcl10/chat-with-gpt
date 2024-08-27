@@ -14,6 +14,15 @@
       "all": false,
       "shell": {
         "open": true
+      },
+      "fs": {
+        "readFile": true,
+        "writeFile": true,
+        "exists": true,
+        "scope": ["$APPCONFIG/*"]
+      },
+      "path": {
+        "all": true
       }
     },
     "bundle": {
