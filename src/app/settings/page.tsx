@@ -1,6 +1,6 @@
 "use client";
 import { WebviewWindow } from "@tauri-apps/api/window";
-import { useEffect, useState } from "react";
+import { MouseEventHandler, useEffect, useState } from "react";
 import {
   exists,
   BaseDirectory,
@@ -27,6 +27,57 @@ async function getSettings(): Promise<AppSettings> {
   return { apiKey: undefined };
 }
 
+function EditAPIKey({
+  handleAPIKeyChange,
+  saveSettings,
+  setEditable,
+}: {
+  handleAPIKeyChange: any;
+  saveSettings: any;
+  setEditable: any;
+}) {
+  return (
+    <div className="inline space-x-2">
+      <label className="text-semibold" htmlFor="api-key">
+        API key:&nbsp;
+      </label>
+      <input
+        id="api-key"
+        type="text"
+        placeholder="API key here..."
+        className="bg-transparent border-2 dark:border-white rounded-md"
+        onChange={(event) => handleAPIKeyChange(event.target.value)}
+      />
+      <button
+        className="rounded-md text-blue-200 border-blue-200 border-2 min-w-20"
+        onClick={saveSettings}
+      >
+        Save
+      </button>
+      <button
+        className="rounded-md text-white border-white border-2 min-w-20"
+        onClick={saveSettings}
+      >
+        Cancel
+      </button>
+    </div>
+  );
+}
+
+function APIKeySet({ onSetEditable }: { onSetEditable: any }) {
+  return (
+    <div className="inline-flex space-x-2">
+      <p>API key is set.</p>
+      <button
+        className="rounded-md text-red-400 border-red-400 border-2 min-w-20"
+        onClick={onSetEditable}
+      >
+        Edit
+      </button>
+    </div>
+  );
+}
+
 export default function SettingsPage() {
   // Set up app window
   const [appWindow, setAppWindow] = useState<WebviewWindow>();
@@ -46,9 +97,15 @@ export default function SettingsPage() {
     setConfigDir(configDir);
   }
 
+  // Set up API key editability
+  const [isEditable, setIsEditable] = useState<boolean>(true);
+
   useEffect(() => {
     setupAppWindow();
-    getSettings().then((settings) => setAppSettings(settings));
+    getSettings().then((settings) => {
+      setAppSettings(settings);
+      settings.apiKey ? setIsEditable(false) : setIsEditable(true);
+    });
     setupConfigDir();
   }, []);
 
@@ -62,31 +119,22 @@ export default function SettingsPage() {
     await writeTextFile("chat-with-gpt-settings.json", contents, {
       dir: BaseDirectory.AppConfig,
     });
+
+    setIsEditable(false);
   }
 
   return (
     <div className="sm:p-5 lg:p-20 space-y-2 flex flex-col">
       <h1 className="text-3xl font-semibold pb-4">Settings</h1>
-      <div className="inline space-x-2">
-        <label className="text-semibold" htmlFor="api-key">
-          API key:&nbsp;
-        </label>
-        <input
-          id="api-key"
-          type="text"
-          placeholder={
-            appSettings.apiKey ? appSettings.apiKey : "API key here..."
-          }
-          className="bg-transparent border-2 dark:border-white rounded-md"
-          onChange={(event) => handleAPIKeyChange(event.target.value)}
+      {isEditable ? (
+        <EditAPIKey
+          handleAPIKeyChange={handleAPIKeyChange}
+          saveSettings={() => saveSettings(appSettings)}
+          setEditable={() => setIsEditable(false)}
         />
-        <button
-          className="rounded-md text-blue-200 border-blue-200 border-2 min-w-20"
-          onClick={() => saveSettings(appSettings)}
-        >
-          Save
-        </button>
-      </div>
+      ) : (
+        <APIKeySet onSetEditable={() => setIsEditable(true)} />
+      )}
     </div>
   );
 }
