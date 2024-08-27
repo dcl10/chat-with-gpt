@@ -20,6 +20,9 @@
         "writeFile": true,
         "exists": true,
         "scope": ["$APPCONFIG/*"]
+      },
+      "path": {
+        "all": true
       }
     },
     "bundle": {
