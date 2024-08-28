@@ -7,11 +7,11 @@ import {
 } from "@tauri-apps/api/fs";
 import { AppSettings } from "@/lib/types";
 
-export function cn(...inputs: ClassValue[]) {
+function cn(...inputs: ClassValue[]) {
   return twMerge(clsx(inputs));
 }
 
-export async function getSettings(): Promise<AppSettings> {
+async function getSettings(): Promise<AppSettings> {
   if (
     await exists("chat-with-gpt-settings.json", {
       dir: BaseDirectory.AppConfig,
@@ -25,3 +25,5 @@ export async function getSettings(): Promise<AppSettings> {
   }
   return { apiKey: undefined };
 }
+
+export { cn, getSettings }
