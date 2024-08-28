@@ -62,6 +62,7 @@ export default function SettingsPage() {
   const [appWindow, setAppWindow] = useState<WebviewWindow>();
   const [appSettings, setAppSettings] = useState<AppSettings>({
     apiKey: undefined,
+    model: undefined
   });
   async function setupAppWindow() {
     const appWindow = (await import("@tauri-apps/api/window")).appWindow;
