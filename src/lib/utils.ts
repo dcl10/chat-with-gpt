@@ -23,7 +23,7 @@ async function getSettings(): Promise<AppSettings> {
     let settings: AppSettings = JSON.parse(jsonString);
     return settings;
   }
-  return { apiKey: undefined };
+  return { apiKey: undefined, model: undefined };
 }
 
 export { cn, getSettings }
