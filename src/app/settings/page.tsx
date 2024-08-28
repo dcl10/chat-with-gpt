@@ -1,32 +1,10 @@
 "use client";
 import { WebviewWindow } from "@tauri-apps/api/window";
 import { useEffect, useState } from "react";
-import {
-  exists,
-  BaseDirectory,
-  readTextFile,
-  writeTextFile,
-} from "@tauri-apps/api/fs";
+import { BaseDirectory, writeTextFile } from "@tauri-apps/api/fs";
 import BackButton from "@/components/ui/back-button";
-
-type AppSettings = {
-  apiKey?: string;
-};
-
-async function getSettings(): Promise<AppSettings> {
-  if (
-    await exists("chat-with-gpt-settings.json", {
-      dir: BaseDirectory.AppConfig,
-    })
-  ) {
-    let jsonString = await readTextFile("chat-with-gpt-settings.json", {
-      dir: BaseDirectory.AppConfig,
-    });
-    let settings: AppSettings = JSON.parse(jsonString);
-    return settings;
-  }
-  return { apiKey: undefined };
-}
+import { AppSettings } from "@/lib/types";
+import { getSettings } from "@/lib/utils";
 
 function EditAPIKey({
   handleAPIKeyChange,
@@ -117,7 +95,7 @@ export default function SettingsPage() {
 
   return (
     <div className="sm:p-5 lg:p-20 space-y-2 flex flex-col">
-      <BackButton onClick={() => window.location.pathname = "/"}/>
+      <BackButton onClick={() => (window.location.pathname = "/")} />
       <h1 className="text-3xl font-semibold pb-4">Settings</h1>
       {isEditable ? (
         <EditAPIKey
