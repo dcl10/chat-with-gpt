@@ -9,9 +9,9 @@ export default function ChatBubble({
   const position = isUser ? "ml-auto" : "mr-auto";
 
   return (
-    <div className={`${position} flex`}>
-      <div className={`${bgColor} ${position} max-w-screen-sm`}>
-        <p className="dark:text-white">{text}</p>
+    <div className="flex">
+      <div className={`${bgColor} ${position} max-w-screen-sm rounded-lg`}>
+        <p className="dark:text-white light:text-black px-4 py-0.5">{text}</p>
       </div>
     </div>
   );
