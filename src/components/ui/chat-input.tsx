@@ -1,7 +1,9 @@
 import { Button, TextInput } from 'flowbite-react';
 import { ArrowUpIcon } from "@heroicons/react/24/outline";
+import { useRef } from 'react';
 
-export default function ChatInput({onClick}:{onClick: () => void}) {
+export default function ChatInput({onClick}:{onClick: Function}) {
+    const ref = useRef("")
     return (
         <div className="relative w-full max-w-md">
           <TextInput
@@ -10,11 +12,11 @@ export default function ChatInput({onClick}:{onClick: () => void}) {
             placeholder="Type a message..."
             className="rounded-full"
             sizing={"md"}
-            color={"dark"}
+            onChange={(event) => ref.current = event.target.value}
           />
           <Button
             type="button"
-            onClick={onClick}
+            onClick={() => onClick(ref.current, true)}
             className="items-center absolute right-1 top-1/2 transform -translate-y-1/2 rounded-full bg-neutral-200 text-black hover:text-white"
             color={"dark"}
           >
