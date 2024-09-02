@@ -1,7 +1,7 @@
-use serde::{Deserialize, Serialize};
-use std::fs;
-use tauri::api::path as tauri_path;
 use crate::constants::APPSETTINGS_NAME;
+use serde::{Deserialize, Serialize};
+use std::fs::{self, write};
+use tauri::api::path as tauri_path;
 
 #[derive(Serialize, Deserialize, Default, Debug)]
 #[serde(rename_all = "camelCase")]
@@ -35,5 +35,16 @@ impl AppSettings {
             .join(APPSETTINGS_NAME);
 
         return config_file.exists();
+    }
+
+    pub fn new_config_file(config: &tauri::Config) {
+        let config_file = tauri_path::app_config_dir(config)
+            .unwrap()
+            .join(APPSETTINGS_NAME);
+
+        let app_settings = AppSettings::default();
+        let app_settings_str = serde_json::to_string(&app_settings).unwrap();
+
+        fs::write(config_file, app_settings_str).expect("Unable to create app configuration");
     }
 }

@@ -4,15 +4,20 @@
 use settings::AppSettings;
 use tauri::Manager;
 
-mod settings;
 mod constants;
+mod settings;
 
 fn main() {
     tauri::Builder::default()
         .setup(|app| {
             let config = app.config();
-            let app_settings = AppSettings::from_file(&config);
-            println!("{:?}", app_settings);
+            let mut app_settings = AppSettings::default();
+            if AppSettings::config_file_exists(&config) {
+                app_settings = AppSettings::from_file(&config);
+            } else {
+                AppSettings::new_config_file(&config);
+                app_settings = AppSettings::from_file(&config);
+            }
             app.manage(app_settings);
             Ok(())
         })
