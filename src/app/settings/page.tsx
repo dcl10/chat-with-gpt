@@ -5,6 +5,8 @@ import { BaseDirectory, writeTextFile } from "@tauri-apps/api/fs";
 import BackButton from "@/components/ui/back-button";
 import { AppSettings } from "@/lib/types";
 import { getSettings } from "@/lib/utils";
+import { Label, Select, Button } from "flowbite-react";
+import { modelChoices } from "@/lib/constants";
 
 function EditAPIKey({
   handleAPIKeyChange,
@@ -43,6 +45,33 @@ function EditAPIKey({
   );
 }
 
+function EditModel({
+  choices,
+  saveSettings,
+  handleModelChange,
+}: {
+  choices: string[];
+  saveSettings: any;
+  handleModelChange: any;
+}) {
+  return (
+    <div className="inline-flex space-x-2 items-center">
+      <Label htmlFor="models" value="ChatGPT model:" color="light" />
+      <Select
+        id="models"
+        onChange={(event) => handleModelChange(event.target.value)}
+      >
+        {choices.map((value, index) => (
+          <option id={index.toString()}>{value}</option>
+        ))}
+      </Select>
+      <Button color={"blue"} onClick={saveSettings} outline>
+        Save
+      </Button>
+    </div>
+  );
+}
+
 function APIKeySet({ onSetEditable }: { onSetEditable: any }) {
   return (
     <div className="inline-flex space-x-2">
@@ -62,7 +91,7 @@ export default function SettingsPage() {
   const [appWindow, setAppWindow] = useState<WebviewWindow>();
   const [appSettings, setAppSettings] = useState<AppSettings>({
     apiKey: undefined,
-    model: undefined
+    model: undefined,
   });
   async function setupAppWindow() {
     const appWindow = (await import("@tauri-apps/api/window")).appWindow;
@@ -82,6 +111,10 @@ export default function SettingsPage() {
 
   function handleAPIKeyChange(newValue: string): void {
     setAppSettings((prev) => ({ ...prev, apiKey: newValue }));
+  }
+
+  function handleModelChange(newValue: string): void {
+    setAppSettings((prev) => ({ ...prev, model: newValue }));
   }
 
   async function saveSettings(settings: AppSettings): Promise<void> {
@@ -107,6 +140,11 @@ export default function SettingsPage() {
       ) : (
         <APIKeySet onSetEditable={() => setIsEditable(true)} />
       )}
+      <EditModel
+        choices={modelChoices}
+        saveSettings={() => saveSettings(appSettings)}
+        handleModelChange={handleModelChange}
+      />
     </div>
   );
 }
