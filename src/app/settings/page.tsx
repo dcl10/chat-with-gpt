@@ -1,12 +1,11 @@
 "use client";
 import { WebviewWindow } from "@tauri-apps/api/window";
 import { useEffect, useState } from "react";
-import { BaseDirectory, writeTextFile } from "@tauri-apps/api/fs";
 import { invoke } from "@tauri-apps/api/tauri";
 import BackButton from "@/components/ui/back-button";
 import { AppSettings } from "@/lib/types";
 import { Label, Select, Button } from "flowbite-react";
-import { MODEL_CHOICES, APPSETTINGS_NAME } from "@/lib/constants";
+import { MODEL_CHOICES } from "@/lib/constants";
 
 function EditAPIKey({
   handleAPIKeyChange,
