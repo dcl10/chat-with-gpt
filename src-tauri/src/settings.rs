@@ -56,8 +56,21 @@ pub fn get_settings(state: State<'_, Mutex<AppSettings>>) -> AppSettings {
 }
 
 #[tauri::command]
-pub fn set_settings(state: State<'_, Mutex<AppSettings>>, new_settings: AppSettings) {
+pub fn set_settings(
+    state: State<'_, Mutex<AppSettings>>,
+    app_handle: tauri::AppHandle,
+    new_settings: AppSettings,
+) {
     let mut settings = state.lock().unwrap();
-    settings.api_key = new_settings.api_key;
-    settings.model = new_settings.model;
+    settings.api_key = new_settings.api_key.clone();
+    settings.model = new_settings.model.clone();
+
+    let app_settings_str = serde_json::to_string(&new_settings).unwrap();
+    let config_file = app_handle
+        .path_resolver()
+        .app_config_dir()
+        .unwrap()
+        .join(APPSETTINGS_NAME);
+
+    fs::write(config_file, app_settings_str).expect("Unable to create app configuration");
 }

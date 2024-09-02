@@ -123,14 +123,7 @@ export default function SettingsPage() {
   }
 
   async function saveSettings(settings: AppSettings): Promise<void> {
-    let contents = JSON.stringify(settings);
-
     await invoke("set_settings", { newSettings: settings });
-
-    await writeTextFile(APPSETTINGS_NAME, contents, {
-      dir: BaseDirectory.AppConfig,
-    });
-
     setIsEditable(false);
   }
 
