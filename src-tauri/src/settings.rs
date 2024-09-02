@@ -1,7 +1,10 @@
 use crate::constants::APPSETTINGS_NAME;
 use serde::{Deserialize, Serialize};
-use std::fs::{self, write};
-use tauri::api::path as tauri_path;
+use std::{
+    fs::{self, write},
+    sync::Mutex,
+};
+use tauri::{api::path as tauri_path, State};
 
 #[derive(Serialize, Deserialize, Default, Debug)]
 #[serde(rename_all = "camelCase")]
@@ -46,5 +49,14 @@ impl AppSettings {
         let app_settings_str = serde_json::to_string(&app_settings).unwrap();
 
         fs::write(config_file, app_settings_str).expect("Unable to create app configuration");
+    }
+}
+
+#[tauri::command]
+pub fn get_settings(state: State<'_, Mutex<AppSettings>>) -> AppSettings {
+    let settings = state.lock().unwrap();
+    AppSettings {
+        api_key: settings.api_key.clone(),
+        model: settings.model.clone(),
     }
 }

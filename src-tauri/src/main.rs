@@ -1,7 +1,7 @@
 // Prevents additional console window on Windows in release, DO NOT REMOVE!!
 #![cfg_attr(not(debug_assertions), windows_subsystem = "windows")]
 
-use settings::AppSettings;
+use settings::{get_settings, AppSettings};
 use tauri::Manager;
 
 mod constants;
@@ -21,6 +21,7 @@ fn main() {
             app.manage(app_settings);
             Ok(())
         })
+        .invoke_handler(tauri::generate_handler![get_settings])
         .run(tauri::generate_context!())
         .expect("error while running tauri application");
 }
