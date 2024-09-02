@@ -3,7 +3,7 @@
 
 use std::sync::Mutex;
 
-use settings::{get_settings, AppSettings};
+use settings::{get_settings, set_settings, AppSettings};
 use tauri::Manager;
 
 mod constants;
@@ -23,7 +23,7 @@ fn main() {
             app.manage(Mutex::new(app_settings));
             Ok(())
         })
-        .invoke_handler(tauri::generate_handler![get_settings])
+        .invoke_handler(tauri::generate_handler![get_settings, set_settings])
         .run(tauri::generate_context!())
         .expect("error while running tauri application");
 }

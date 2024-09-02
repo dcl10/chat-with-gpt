@@ -54,3 +54,10 @@ pub fn get_settings(state: State<'_, Mutex<AppSettings>>) -> AppSettings {
     let settings = state.lock().unwrap();
     settings.clone()
 }
+
+#[tauri::command]
+pub fn set_settings(state: State<'_, Mutex<AppSettings>>, new_settings: AppSettings) {
+    let mut settings = state.lock().unwrap();
+    settings.api_key = new_settings.api_key;
+    settings.model = new_settings.model;
+}
