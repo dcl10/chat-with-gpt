@@ -1,12 +1,9 @@
 use crate::constants::APPSETTINGS_NAME;
 use serde::{Deserialize, Serialize};
-use std::{
-    fs::{self, write},
-    sync::Mutex,
-};
+use std::fs;
 use tauri::{api::path as tauri_path, State};
 
-#[derive(Serialize, Deserialize, Default, Debug)]
+#[derive(Serialize, Deserialize, Default, Debug, Clone)]
 #[serde(rename_all = "camelCase")]
 pub struct AppSettings {
     pub api_key: String,
@@ -53,10 +50,6 @@ impl AppSettings {
 }
 
 #[tauri::command]
-pub fn get_settings(state: State<'_, Mutex<AppSettings>>) -> AppSettings {
-    let settings = state.lock().unwrap();
-    AppSettings {
-        api_key: settings.api_key.clone(),
-        model: settings.model.clone(),
-    }
+pub fn get_settings(state: State<'_, AppSettings>) -> AppSettings {
+    state.inner().clone()
 }
