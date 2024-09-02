@@ -2,11 +2,11 @@
 import { WebviewWindow } from "@tauri-apps/api/window";
 import { useEffect, useState } from "react";
 import { BaseDirectory, writeTextFile } from "@tauri-apps/api/fs";
+import { invoke } from "@tauri-apps/api/tauri";
 import BackButton from "@/components/ui/back-button";
 import { AppSettings } from "@/lib/types";
-import { getSettings } from "@/lib/utils";
 import { Label, Select, Button } from "flowbite-react";
-import { modelChoices } from "@/lib/constants";
+import { MODEL_CHOICES, APPSETTINGS_NAME } from "@/lib/constants";
 
 function EditAPIKey({
   handleAPIKeyChange,
@@ -49,10 +49,12 @@ function EditModel({
   choices,
   saveSettings,
   handleModelChange,
+  value
 }: {
   choices: string[];
   saveSettings: any;
   handleModelChange: any;
+  value: string;
 }) {
   return (
     <div className="inline-flex space-x-2 items-center">
@@ -60,6 +62,7 @@ function EditModel({
       <Select
         id="models"
         onChange={(event) => handleModelChange(event.target.value)}
+        value={value}
       >
         {choices.map((value, index) => (
           <option key={index.toString()}>{value}</option>
@@ -90,8 +93,8 @@ export default function SettingsPage() {
   // Set up app window
   const [appWindow, setAppWindow] = useState<WebviewWindow>();
   const [appSettings, setAppSettings] = useState<AppSettings>({
-    apiKey: undefined,
-    model: undefined,
+    apiKey: "",
+    model: "",
   });
   async function setupAppWindow() {
     const appWindow = (await import("@tauri-apps/api/window")).appWindow;
@@ -103,7 +106,7 @@ export default function SettingsPage() {
 
   useEffect(() => {
     setupAppWindow();
-    getSettings().then((settings) => {
+    invoke<AppSettings>("get_settings").then((settings) => {
       setAppSettings(settings);
       settings.apiKey ? setIsEditable(false) : setIsEditable(true);
     });
@@ -120,7 +123,7 @@ export default function SettingsPage() {
   async function saveSettings(settings: AppSettings): Promise<void> {
     let contents = JSON.stringify(settings);
 
-    await writeTextFile("chat-with-gpt-settings.json", contents, {
+    await writeTextFile(APPSETTINGS_NAME, contents, {
       dir: BaseDirectory.AppConfig,
     });
 
@@ -141,9 +144,10 @@ export default function SettingsPage() {
         <APIKeySet onSetEditable={() => setIsEditable(true)} />
       )}
       <EditModel
-        choices={modelChoices}
+        choices={MODEL_CHOICES}
         saveSettings={() => saveSettings(appSettings)}
         handleModelChange={handleModelChange}
+        value={appSettings.model}
       />
     </div>
   );

@@ -1,6 +1,6 @@
 export type AppSettings = {
-    apiKey?: string;
-    model?: string;
+    apiKey: string;
+    model: string;
 };
 
 export type TextAndRole = {
