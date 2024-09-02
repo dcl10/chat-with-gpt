@@ -11,19 +11,4 @@ function cn(...inputs: ClassValue[]) {
   return twMerge(clsx(inputs));
 }
 
-async function getSettings(): Promise<AppSettings> {
-  if (
-    await exists("chat-with-gpt-settings.json", {
-      dir: BaseDirectory.AppConfig,
-    })
-  ) {
-    let jsonString = await readTextFile("chat-with-gpt-settings.json", {
-      dir: BaseDirectory.AppConfig,
-    });
-    let settings: AppSettings = JSON.parse(jsonString);
-    return settings;
-  }
-  return { apiKey: undefined, model: undefined };
-}
-
-export { cn, getSettings }
+export { cn }
