@@ -15,7 +15,6 @@ impl AppSettings {
         let config_file = tauri_path::app_config_dir(config)
             .unwrap()
             .join(APPSETTINGS_NAME);
-        println!("{:?}", config_file);
 
         if config_file.exists() {
             match fs::read_to_string(config_file) {
@@ -28,5 +27,13 @@ impl AppSettings {
         }
 
         AppSettings::default()
+    }
+
+    pub fn config_file_exists(config: &tauri::Config) -> bool {
+        let config_file = tauri_path::app_config_dir(config)
+            .unwrap()
+            .join(APPSETTINGS_NAME);
+
+        return config_file.exists();
     }
 }
