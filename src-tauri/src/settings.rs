@@ -1,6 +1,6 @@
 use crate::constants::APPSETTINGS_NAME;
 use serde::{Deserialize, Serialize};
-use std::fs;
+use std::{fs, sync::Mutex};
 use tauri::{api::path as tauri_path, State};
 
 #[derive(Serialize, Deserialize, Default, Debug, Clone)]
@@ -50,6 +50,7 @@ impl AppSettings {
 }
 
 #[tauri::command]
-pub fn get_settings(state: State<'_, AppSettings>) -> AppSettings {
-    state.inner().clone()
+pub fn get_settings(state: State<'_, Mutex<AppSettings>>) -> AppSettings {
+    let settings = state.lock().unwrap();
+    settings.clone()
 }

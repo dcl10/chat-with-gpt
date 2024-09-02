@@ -1,6 +1,8 @@
 // Prevents additional console window on Windows in release, DO NOT REMOVE!!
 #![cfg_attr(not(debug_assertions), windows_subsystem = "windows")]
 
+use std::sync::Mutex;
+
 use settings::{get_settings, AppSettings};
 use tauri::Manager;
 
@@ -18,7 +20,7 @@ fn main() {
                 AppSettings::new_config_file(&config);
                 app_settings = AppSettings::from_file(&config);
             }
-            app.manage(app_settings);
+            app.manage(Mutex::new(app_settings));
             Ok(())
         })
         .invoke_handler(tauri::generate_handler![get_settings])

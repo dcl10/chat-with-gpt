@@ -111,7 +111,6 @@ export default function SettingsPage() {
       settings.apiKey ? setIsEditable(false) : setIsEditable(true);
     });
   }, []);
-  console.log(appSettings);
 
   function handleAPIKeyChange(newValue: string): void {
     setAppSettings((prev) => ({ ...prev, apiKey: newValue }));
