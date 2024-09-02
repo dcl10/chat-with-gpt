@@ -49,12 +49,12 @@ function EditModel({
   choices,
   saveSettings,
   handleModelChange,
-  value
+  selected,
 }: {
   choices: string[];
   saveSettings: any;
   handleModelChange: any;
-  value: string;
+  selected: string;
 }) {
   return (
     <div className="inline-flex space-x-2 items-center">
@@ -62,10 +62,10 @@ function EditModel({
       <Select
         id="models"
         onChange={(event) => handleModelChange(event.target.value)}
-        value={value}
+        value={selected}
       >
         {choices.map((value, index) => (
-          <option key={index.toString()}>{value}</option>
+          <option key={index.toString()} value={value}>{value}</option>
         ))}
       </Select>
       <Button color={"blue"} onClick={saveSettings} outline>
@@ -111,6 +111,7 @@ export default function SettingsPage() {
       settings.apiKey ? setIsEditable(false) : setIsEditable(true);
     });
   }, []);
+  console.log(appSettings);
 
   function handleAPIKeyChange(newValue: string): void {
     setAppSettings((prev) => ({ ...prev, apiKey: newValue }));
@@ -147,7 +148,7 @@ export default function SettingsPage() {
         choices={MODEL_CHOICES}
         saveSettings={() => saveSettings(appSettings)}
         handleModelChange={handleModelChange}
-        value={appSettings.model}
+        selected={appSettings.model}
       />
     </div>
   );
