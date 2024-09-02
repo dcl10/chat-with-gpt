@@ -62,7 +62,7 @@ function EditModel({
         onChange={(event) => handleModelChange(event.target.value)}
       >
         {choices.map((value, index) => (
-          <option id={index.toString()}>{value}</option>
+          <option key={index.toString()}>{value}</option>
         ))}
       </Select>
       <Button color={"blue"} onClick={saveSettings} outline>
