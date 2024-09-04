@@ -6,6 +6,7 @@ import BackButton from "@/components/ui/back-button";
 import { AppSettings } from "@/lib/types";
 import { Label, Select, Button } from "flowbite-react";
 import { MODEL_CHOICES } from "@/lib/constants";
+import { useRouter } from "next/navigation";
 
 function EditAPIKey({
   handleAPIKeyChange,
@@ -102,6 +103,9 @@ export default function SettingsPage() {
     setAppWindow(appWindow);
   }
 
+  // Set up router
+  const router = useRouter();
+
   // Set up API key editability
   const [isEditable, setIsEditable] = useState<boolean>();
 
@@ -112,6 +116,10 @@ export default function SettingsPage() {
       settings.apiKey ? setIsEditable(false) : setIsEditable(true);
     });
   }, []);
+
+  function goBack() {
+    router.back()
+  }
 
   function handleAPIKeyChange(newValue: string): void {
     setAppSettings((prev) => ({ ...prev, apiKey: newValue }));
@@ -128,7 +136,7 @@ export default function SettingsPage() {
 
   return (
     <div className="sm:p-5 lg:p-20 space-y-2 flex flex-col">
-      <BackButton onClick={() => (window.location.pathname = "/")} />
+      <BackButton onClick={goBack} />
       <h1 className="text-3xl font-semibold pb-4">Settings</h1>
       {isEditable ? (
         <EditAPIKey
