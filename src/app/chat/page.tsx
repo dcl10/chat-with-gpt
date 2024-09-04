@@ -7,9 +7,15 @@ import { ChatGptResponse, Message } from "@/lib/types";
 import { useState } from "react";
 import { invoke } from "@tauri-apps/api/tauri";
 import { ChatRole } from "@/lib/enums";
+import { useRouter } from "next/navigation";
 
 export default function ChatPage() {
   const [chatHistory, setChatHistory] = useState<Message[]>([]);
+  const router = useRouter();
+
+  function goBack() {
+    router.back()
+  }
 
   async function addToHistory(message: Message) {
     let messages: Message[] = [message];
@@ -19,9 +25,9 @@ export default function ChatPage() {
           model: "gpt-4o-mini",
           messages: [{ role: message.role, content: message.content }],
         },
-      })
-      response.choices.map(choice => messages.push(choice.message));
-      setChatHistory([...chatHistory, ...messages])
+      });
+      response.choices.map((choice) => messages.push(choice.message));
+      setChatHistory([...chatHistory, ...messages]);
     } catch (error) {
       console.error(error);
     }
@@ -29,9 +35,13 @@ export default function ChatPage() {
 
   return (
     <div className="sm:p-5 lg:p-20 space-y-4 justify-center">
-      <BackButton onClick={() => (window.location.href = "/")} />
+      <BackButton onClick={goBack} />
       {chatHistory.map((message: Message, key) => (
-        <ChatBubble key={key} text={message.content} isUser={message.role === ChatRole.User} />
+        <ChatBubble
+          key={key}
+          text={message.content}
+          isUser={message.role === ChatRole.User}
+        />
       ))}
       <div className="flex items-center justify-center fixed bottom-4 inset-x-2">
         <ChatInput onClick={addToHistory} />

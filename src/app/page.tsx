@@ -1,6 +1,18 @@
+"use client";
 import MainMenuItem from "@/components/ui/main-menu-item";
+import { useRouter } from "next/navigation";
 
 export default function Home() {
+  const router = useRouter();
+
+  function goToChat() {
+    router.push("/chat");
+  }
+
+  function goToSettings() {
+    router.push("/settings");
+  }
+
   return (
     <main className="flex-col items-center justify-start lg:p-24 md:p-10 content-center">
       <section>
@@ -14,9 +26,9 @@ export default function Home() {
         </div>
       </section>
 
-      <MainMenuItem title="New chat" subtitle="Start a new chat" goTo={"/chat"}/>
+      <MainMenuItem title="New chat" subtitle="Start a new chat" onClick={goToChat}/>
 
-      <MainMenuItem title="Settings" subtitle="Configure application from here." goTo={"/settings"}/>
+      <MainMenuItem title="Settings" subtitle="Configure application from here." onClick={goToSettings}/>
     </main>
   );
 }
