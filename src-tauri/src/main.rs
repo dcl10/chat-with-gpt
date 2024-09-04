@@ -26,7 +26,11 @@ fn main() {
             app.manage(Mutex::new(app_settings));
             Ok(())
         })
-        .invoke_handler(tauri::generate_handler![get_settings, set_settings, chat_to_model])
+        .invoke_handler(tauri::generate_handler![
+            get_settings,
+            set_settings,
+            chat_to_model
+        ])
         .run(tauri::generate_context!())
         .expect("error while running tauri application");
 }
