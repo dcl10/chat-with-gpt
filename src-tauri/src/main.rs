@@ -3,10 +3,13 @@
 
 use std::sync::Mutex;
 
+use chatgpt::chat_to_model;
 use settings::{get_settings, set_settings, AppSettings};
 use tauri::Manager;
 
+mod chatgpt;
 mod constants;
+mod models;
 mod settings;
 
 fn main() {
@@ -23,7 +26,11 @@ fn main() {
             app.manage(Mutex::new(app_settings));
             Ok(())
         })
-        .invoke_handler(tauri::generate_handler![get_settings, set_settings])
+        .invoke_handler(tauri::generate_handler![
+            get_settings,
+            set_settings,
+            chat_to_model
+        ])
         .run(tauri::generate_context!())
         .expect("error while running tauri application");
 }
