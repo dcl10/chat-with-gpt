@@ -1,6 +1,7 @@
 import { Button, TextInput } from 'flowbite-react';
 import { ArrowUpIcon } from "@heroicons/react/24/outline";
 import { useRef } from 'react';
+import { ChatRole } from '@/lib/enums';
 
 export default function ChatInput({onClick}:{onClick: Function}) {
     const ref = useRef("")
@@ -16,7 +17,7 @@ export default function ChatInput({onClick}:{onClick: Function}) {
           />
           <Button
             type="button"
-            onClick={() => onClick(ref.current, true)}
+            onClick={() => onClick({content: ref.current, role: ChatRole.User})}
             className="items-center absolute right-1 top-1/2 transform -translate-y-1/2 rounded-full bg-neutral-200 text-black hover:text-white"
             color={"dark"}
           >
