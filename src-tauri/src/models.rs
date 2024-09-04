@@ -17,7 +17,7 @@ pub struct Choice {
     pub finish_reason: String,
     pub index: usize,
     pub message: Message,
-    pub logprobs: isize,
+    pub logprobs: Option<isize>,
 }
 
 #[derive(Debug, Clone, Serialize, Deserialize)]
