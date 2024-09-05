@@ -118,7 +118,7 @@ export default function SettingsPage() {
   }, []);
 
   function goBack() {
-    router.back()
+    router.back();
   }
 
   function handleAPIKeyChange(newValue: string): void {
@@ -135,24 +135,26 @@ export default function SettingsPage() {
   }
 
   return (
-    <div className="sm:p-5 lg:p-20 space-y-2 flex flex-col">
+    <div className="sm:p-5 lg:p-20 space-y-2">
       <BackButton onClick={goBack} />
-      <h1 className="text-3xl font-semibold pb-4">Settings</h1>
-      {isEditable ? (
-        <EditAPIKey
-          handleAPIKeyChange={handleAPIKeyChange}
+      <div className="space-y-2 flex flex-col">
+        <h1 className="text-3xl font-semibold pb-4">Settings</h1>
+        {isEditable ? (
+          <EditAPIKey
+            handleAPIKeyChange={handleAPIKeyChange}
+            saveSettings={() => saveSettings(appSettings)}
+            setEditable={() => setIsEditable(false)}
+          />
+        ) : (
+          <APIKeySet onSetEditable={() => setIsEditable(true)} />
+        )}
+        <EditModel
+          choices={MODEL_CHOICES}
           saveSettings={() => saveSettings(appSettings)}
-          setEditable={() => setIsEditable(false)}
+          handleModelChange={handleModelChange}
+          selected={appSettings.model}
         />
-      ) : (
-        <APIKeySet onSetEditable={() => setIsEditable(true)} />
-      )}
-      <EditModel
-        choices={MODEL_CHOICES}
-        saveSettings={() => saveSettings(appSettings)}
-        handleModelChange={handleModelChange}
-        selected={appSettings.model}
-      />
+      </div>
     </div>
   );
 }
