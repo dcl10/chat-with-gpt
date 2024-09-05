@@ -1,14 +1,15 @@
 import * as React from "react";
 import { ArrowLeftIcon } from "@heroicons/react/24/outline";
+import { Button } from "flowbite-react";
 
 export default function BackButton({ onClick }: { onClick: any }) {
   return (
-    <button
-      className="content-start items-center space-x-2 inline-flex max-w-20"
+    <Button
       onClick={onClick}
+      color="blue"
+      pill
     >
-      <ArrowLeftIcon className="size-8 text-blue-200 hover:text-white rounded-full border-2 border-blue-200 hover:border-white" />
-      <p className="test-semibold text-white">Back</p>
-    </button>
+      <ArrowLeftIcon className="size-8" title="Back" />
+    </Button>
   );
 }
