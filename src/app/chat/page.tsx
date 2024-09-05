@@ -18,7 +18,7 @@ export default function ChatPage() {
   }
 
   async function addToHistory(message: Message) {
-    let messages: Message[] = [message];
+    setChatHistory(prev => [...prev, message])
     try {
       let response: ChatGptResponse = await invoke("chat_to_model", {
         request: {
@@ -26,8 +26,9 @@ export default function ChatPage() {
           messages: [{ role: message.role, content: message.content }],
         },
       });
+      let messages: Message[] = [];
       response.choices.map((choice) => messages.push(choice.message));
-      setChatHistory([...chatHistory, ...messages]);
+      setChatHistory(prev => [...prev, ...messages]);
     } catch (error) {
       console.error(error);
     }
