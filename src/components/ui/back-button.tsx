@@ -8,6 +8,7 @@ export default function BackButton({ onClick }: { onClick: any }) {
       onClick={onClick}
       color="blue"
       pill
+      className="ml-4"
     >
       <ArrowLeftIcon className="size-8" title="Back" />
     </Button>
