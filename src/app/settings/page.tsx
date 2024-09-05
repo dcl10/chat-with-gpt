@@ -1,5 +1,5 @@
 "use client";
-import { WebviewWindow } from "@tauri-apps/api/window";
+
 import { useEffect, useState } from "react";
 import { invoke } from "@tauri-apps/api/tauri";
 import BackButton from "@/components/ui/back-button";
@@ -92,25 +92,16 @@ function APIKeySet({ onSetEditable }: { onSetEditable: any }) {
 }
 
 export default function SettingsPage() {
-  // Set up app window
-  const [appWindow, setAppWindow] = useState<WebviewWindow>();
   const [appSettings, setAppSettings] = useState<AppSettings>({
     apiKey: "",
     model: "",
-  });
-  async function setupAppWindow() {
-    const appWindow = (await import("@tauri-apps/api/window")).appWindow;
-    setAppWindow(appWindow);
-  }
+  })
 
-  // Set up router
   const router = useRouter();
 
-  // Set up API key editability
   const [isEditable, setIsEditable] = useState<boolean>();
 
   useEffect(() => {
-    setupAppWindow();
     invoke<AppSettings>("get_settings").then((settings) => {
       setAppSettings(settings);
       settings.apiKey ? setIsEditable(false) : setIsEditable(true);
