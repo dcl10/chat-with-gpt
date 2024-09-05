@@ -26,7 +26,7 @@ export default function Home() {
               href="https://tauri.app/"
               target="_blank"
               rel="noopener noreferrer"
-              className="text-blue-600 hover:text-green-600 hover:text-xl"
+              className="text-blue-700 hover:decoration-solid hover:underline"
             >
               Tauri
             </a>
