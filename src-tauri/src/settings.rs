@@ -38,9 +38,11 @@ impl AppSettings {
     }
 
     pub fn new_config_file(config: &tauri::Config) {
-        let config_file = tauri_path::app_config_dir(config)
-            .unwrap()
-            .join(APPSETTINGS_NAME);
+        let config_dir = tauri_path::app_config_dir(config).unwrap();
+        if !config_dir.exists() {
+            fs::create_dir_all(&config_dir).expect("Unable to create app configuration");
+        }
+        let config_file = config_dir.join(APPSETTINGS_NAME);
 
         let app_settings = AppSettings::default();
         let app_settings_str = serde_json::to_string(&app_settings).unwrap();
