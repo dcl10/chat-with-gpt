@@ -18,7 +18,7 @@ export default function ChatInput({ onClick }: { onClick: Function }) {
         placeholder="Type a message..."
         className="rounded-full"
         sizing={"md"}
-        color={"blue"}
+        color={"gray"}
         value={text}
         onChange={(event) => setText(event.target.value)}
         onKeyDown={(event) => {
@@ -36,8 +36,8 @@ export default function ChatInput({ onClick }: { onClick: Function }) {
             setText("");
           }
         }}
-        className="items-center absolute right-1 top-1/2 transform -translate-y-1/2 rounded-full bg-neutral-200 text-black hover:text-white"
-        color={"dark"}
+        className="items-center absolute right-1 top-1/2 transform -translate-y-1/2 rounded-full text-white"
+        color={"blue"}
         disabled={!validate(text)}
       >
         <ArrowUpIcon className="size-4 rounded-full" />
