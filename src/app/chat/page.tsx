@@ -18,21 +18,8 @@ export default function ChatPage() {
     );
   }, []);
 
-  async function addToHistory(message: Message) {
-    setChatHistory((prev) => [...prev, message]);
-    try {
-      let response: ChatGptResponse = await invoke("chat_to_model", {
-        request: {
-          model: appSettings?.model,
-          messages: [{ role: message.role, content: message.content }],
-        },
-      });
-      let messages: Message[] = [];
-      response.choices.map((choice) => messages.push(choice.message));
-      setChatHistory((prev) => [...prev, ...messages]);
-    } catch (error) {
-      console.error(error);
-    }
+  async function addToHistory(messages: Message[]) {
+    setChatHistory((prev) => [...prev, ...messages]);
   }
 
   async function chatToApi(message: Message): Promise<Message[]> {
