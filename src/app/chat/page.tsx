@@ -18,8 +18,8 @@ export default function ChatPage() {
     );
   }, []);
 
-  async function addToHistory(message: Message) {
-    setChatHistory((prev) => [...prev, message]);
+  async function chatToApi(message: Message): Promise<Message[]> {
+    let messages: Message[] = [];
     try {
       let response: ChatGptResponse = await invoke("chat_to_model", {
         request: {
@@ -27,12 +27,17 @@ export default function ChatPage() {
           messages: [{ role: message.role, content: message.content }],
         },
       });
-      let messages: Message[] = [];
       response.choices.map((choice) => messages.push(choice.message));
-      setChatHistory((prev) => [...prev, ...messages]);
     } catch (error) {
       console.error(error);
     }
+    return messages
+  }
+
+  async function handleChatInput(message: Message) {
+    setChatHistory(prev => [...prev, message]);
+    const messages = await chatToApi(message);
+    setChatHistory(prev => [...prev, ...messages])
   }
 
   return (
@@ -49,7 +54,7 @@ export default function ChatPage() {
         ))}
         <div className="pb-10"></div>
         <div className="flex items-center justify-center fixed bottom-4 inset-x-2">
-          <ChatInput onClick={addToHistory} />
+          <ChatInput onClick={handleChatInput} />
         </div>
       </div>
     </div>
