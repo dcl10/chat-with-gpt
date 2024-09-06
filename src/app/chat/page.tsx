@@ -35,6 +35,22 @@ export default function ChatPage() {
     }
   }
 
+  async function chatToApi(message: Message): Promise<Message[]> {
+    let messages: Message[] = [];
+    try {
+      let response: ChatGptResponse = await invoke("chat_to_model", {
+        request: {
+          model: appSettings?.model,
+          messages: [{ role: message.role, content: message.content }],
+        },
+      });
+      response.choices.map((choice) => messages.push(choice.message));
+    } catch (error) {
+      console.error(error);
+    }
+    return messages
+  }
+
   return (
     <div className="relative">
       <TitleBar title="Chat" />
