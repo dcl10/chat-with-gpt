@@ -18,10 +18,6 @@ export default function ChatPage() {
     );
   }, []);
 
-  async function addToHistory(messages: Message[]) {
-    setChatHistory((prev) => [...prev, ...messages]);
-  }
-
   async function chatToApi(message: Message): Promise<Message[]> {
     let messages: Message[] = [];
     try {
@@ -38,6 +34,12 @@ export default function ChatPage() {
     return messages
   }
 
+  async function handleChatInput(message: Message) {
+    setChatHistory(prev => [...prev, message]);
+    const messages = await chatToApi(message);
+    setChatHistory(prev => [...prev, ...messages])
+  }
+
   return (
     <div className="relative">
       <TitleBar title="Chat" />
@@ -52,7 +54,7 @@ export default function ChatPage() {
         ))}
         <div className="pb-10"></div>
         <div className="flex items-center justify-center fixed bottom-4 inset-x-2">
-          <ChatInput onClick={addToHistory} />
+          <ChatInput onClick={handleChatInput} />
         </div>
       </div>
     </div>
