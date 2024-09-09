@@ -3,11 +3,12 @@
 import { useEffect, useState } from "react";
 import { invoke } from "@tauri-apps/api/tauri";
 import { AppSettings } from "@/lib/types";
-import { Label, Select, Button } from "flowbite-react";
+import { Label, Select, Button, ToastToggle } from "flowbite-react";
 import { MODEL_CHOICES } from "@/lib/constants";
 import { useRouter } from "next/navigation";
 import { CheckIcon } from "@heroicons/react/24/outline";
 import TitleBar from "@/components/ui/title-bar";
+import { Toast } from "flowbite-react";
 
 function EditAPIKey({
   handleAPIKeyChange,
@@ -94,10 +95,12 @@ function APIKeySet({ onSetEditable }: { onSetEditable: any }) {
 
 function Saved() {
   return (
-    <div className="flex flex-col">
-      <CheckIcon className="size-8 text-green-600" />
-      <p className="light:text-black dark:text-white">Saved!</p>
-    </div>
+    <Toast className="bg-transparent border-0 shadow-none">
+      <div className="flex space-x-2 items-center justify-center">
+        <CheckIcon className="size-8 text-green-600" />
+        <p className="light:text-black dark:text-white">Saved!</p>
+      </div>
+    </Toast>
   );
 }
 
@@ -107,9 +110,8 @@ export default function SettingsPage() {
     model: "",
   });
 
-  const router = useRouter();
-
   const [isEditable, setIsEditable] = useState<boolean>();
+  const [showSaved, setShowSaved] = useState<boolean>(() => false);
 
   useEffect(() => {
     invoke<AppSettings>("get_settings").then((settings) => {
@@ -127,8 +129,10 @@ export default function SettingsPage() {
   }
 
   async function saveSettings(settings: AppSettings): Promise<void> {
+    setShowSaved((prev) => !prev);
     await invoke("set_settings", { newSettings: settings });
     setIsEditable(false);
+    setTimeout(() => setShowSaved((prev) => !prev), 2000);
   }
 
   return (
@@ -152,6 +156,7 @@ export default function SettingsPage() {
           selected={appSettings.model}
         />
       </div>
+      {showSaved && <Saved />}
     </div>
   );
 }
