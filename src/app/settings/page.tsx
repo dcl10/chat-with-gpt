@@ -71,7 +71,7 @@ function EditModel({
           </option>
         ))}
       </Select>
-      <Button color={"blue"} onClick={saveSettings} outline>
+      <Button color={"blue"} onClick={saveSettings}>
         Save
       </Button>
     </div>
