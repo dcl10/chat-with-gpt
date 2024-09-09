@@ -3,9 +3,8 @@
 import { useEffect, useState } from "react";
 import { invoke } from "@tauri-apps/api/tauri";
 import { AppSettings } from "@/lib/types";
-import { Label, Select, Button, ToastToggle } from "flowbite-react";
+import { Label, Select, Button } from "flowbite-react";
 import { MODEL_CHOICES } from "@/lib/constants";
-import { useRouter } from "next/navigation";
 import { CheckIcon } from "@heroicons/react/24/outline";
 import TitleBar from "@/components/ui/title-bar";
 import { Toast } from "flowbite-react";
