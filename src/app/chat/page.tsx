@@ -28,8 +28,8 @@ export default function ChatPage() {
         },
       });
       response.choices.map((choice) => messages.push(choice.message));
-    } catch (error) {
-      console.error(error);
+    } catch (error: any) {
+      messages.push({content: error, role: ChatRole.Assistant})
     }
     return messages
   }

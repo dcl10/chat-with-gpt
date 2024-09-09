@@ -9,6 +9,7 @@ use tauri::Manager;
 
 mod chatgpt;
 mod constants;
+mod errors;
 mod models;
 mod settings;
 
@@ -16,7 +17,7 @@ fn main() {
     tauri::Builder::default()
         .setup(|app| {
             let config = app.config();
-            let mut app_settings = AppSettings::default();
+            let app_settings;
             if AppSettings::config_file_exists(&config) {
                 app_settings = AppSettings::from_file(&config);
             } else {

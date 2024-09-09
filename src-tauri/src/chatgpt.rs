@@ -1,10 +1,10 @@
 use crate::{
     constants::CHAT_COMPLETIONS_ENDPOINT,
+    errors::ChatCompletionError,
     models::{ChatGptRequest, ChatGptResponse},
     settings::AppSettings,
 };
 use reqwest::Error as ReqwestError;
-use serde_json::Error as SerdeError;
 use std::sync::Mutex;
 use tauri::State;
 
@@ -23,7 +23,7 @@ pub async fn chat_to_model(
 
     match deserialisation_result {
         Ok(response) => Ok(response),
-        Err(_) => Err("Could not get chat completions".to_string()),
+        Err(error) => Err(error.error.message),
     }
 }
 
@@ -46,6 +46,14 @@ async fn request_completions(
     }
 }
 
-fn deserialise_result(result: &str) -> Result<ChatGptResponse, SerdeError> {
-    serde_json::from_str(result)
+fn deserialise_result(result: &str) -> Result<ChatGptResponse, ChatCompletionError> {
+    // The correct response came back
+    let success = serde_json::from_str::<ChatGptResponse>(result);
+    if success.is_ok() {
+        return Ok(success.unwrap());
+    }
+
+    // An error response comes back from the API
+    let error = serde_json::from_str::<ChatCompletionError>(result);
+    Err(error.unwrap())
 }
