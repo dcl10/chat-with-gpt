@@ -19,7 +19,7 @@ function EditAPIKey({
   setEditable: any;
 }) {
   return (
-    <div className="inline space-x-2">
+    <div className="inline-flex space-x-2 items-center">
       <label className="text-semibold" htmlFor="api-key">
         API key:&nbsp;
       </label>
@@ -30,18 +30,18 @@ function EditAPIKey({
         className="bg-transparent border-2 dark:border-white rounded-md"
         onChange={(event) => handleAPIKeyChange(event.target.value)}
       />
-      <button
-        className="rounded-md text-blue-200 border-blue-200 border-2 min-w-20"
+      <Button
+        color={"blue"}
         onClick={saveSettings}
       >
         Save
-      </button>
-      <button
-        className="rounded-md text-white border-white border-2 min-w-20"
+      </Button>
+      <Button
+        color={"light"}
         onClick={setEditable}
       >
         Cancel
-      </button>
+      </Button>
     </div>
   );
 }
@@ -80,14 +80,14 @@ function EditModel({
 
 function APIKeySet({ onSetEditable }: { onSetEditable: any }) {
   return (
-    <div className="inline-flex space-x-2">
+    <div className="inline-flex space-x-2 items-center">
       <p>API key is set.</p>
-      <button
-        className="rounded-md text-red-400 border-red-400 border-2 min-w-20"
+      <Button
+        color={"failure"}
         onClick={onSetEditable}
       >
         Edit
-      </button>
+      </Button>
     </div>
   );
 }
