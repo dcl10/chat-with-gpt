@@ -6,6 +6,7 @@ import { AppSettings } from "@/lib/types";
 import { Label, Select, Button } from "flowbite-react";
 import { MODEL_CHOICES } from "@/lib/constants";
 import { useRouter } from "next/navigation";
+import { CheckIcon } from "@heroicons/react/24/outline";
 import TitleBar from "@/components/ui/title-bar";
 
 function EditAPIKey({
@@ -91,11 +92,20 @@ function APIKeySet({ onSetEditable }: { onSetEditable: any }) {
   );
 }
 
+function Saved() {
+  return (
+    <div className="flex flex-col">
+      <CheckIcon className="size-8 text-green-600" />
+      <p className="light:text-black dark:text-white">Saved!</p>
+    </div>
+  );
+}
+
 export default function SettingsPage() {
   const [appSettings, setAppSettings] = useState<AppSettings>({
     apiKey: "",
     model: "",
-  })
+  });
 
   const router = useRouter();
 
@@ -107,10 +117,6 @@ export default function SettingsPage() {
       settings.apiKey ? setIsEditable(false) : setIsEditable(true);
     });
   }, []);
-
-  function goBack() {
-    router.back();
-  }
 
   function handleAPIKeyChange(newValue: string): void {
     setAppSettings((prev) => ({ ...prev, apiKey: newValue }));
