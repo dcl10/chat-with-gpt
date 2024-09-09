@@ -5,7 +5,7 @@ import { invoke } from "@tauri-apps/api/tauri";
 import { AppSettings } from "@/lib/types";
 import { Label, Select, Button } from "flowbite-react";
 import { MODEL_CHOICES } from "@/lib/constants";
-import { CheckIcon } from "@heroicons/react/24/outline";
+import { CheckIcon, XMarkIcon } from "@heroicons/react/24/outline";
 import TitleBar from "@/components/ui/title-bar";
 import { Toast } from "flowbite-react";
 
@@ -30,16 +30,10 @@ function EditAPIKey({
         className="bg-transparent border-2 dark:border-white rounded-md"
         onChange={(event) => handleAPIKeyChange(event.target.value)}
       />
-      <Button
-        color={"blue"}
-        onClick={saveSettings}
-      >
+      <Button color={"blue"} onClick={saveSettings}>
         Save
       </Button>
-      <Button
-        color={"light"}
-        onClick={setEditable}
-      >
+      <Button color={"light"} onClick={setEditable}>
         Cancel
       </Button>
     </div>
@@ -82,22 +76,26 @@ function APIKeySet({ onSetEditable }: { onSetEditable: any }) {
   return (
     <div className="inline-flex space-x-2 items-center">
       <p>API key is set.</p>
-      <Button
-        color={"failure"}
-        onClick={onSetEditable}
-      >
+      <Button color={"failure"} onClick={onSetEditable}>
         Edit
       </Button>
     </div>
   );
 }
 
-function Saved() {
+function Saved({ isSuccess, message }: { isSuccess: boolean; message: string; }) {
+  const successBg = "bg-green-200";
+  const failBg = "bg-red-200";
   return (
-    <Toast className="bg-green-200 border-0 shadow-none fixed inset-x-auto bottom-4">
+    <Toast className={`${isSuccess ? successBg : failBg} border-0 shadow-none fixed inset-x-auto bottom-4`}>
       <div className="flex space-x-2 items-center justify-center">
-        <CheckIcon className="size-8 text-green-600" />
-        <p className="light:text-black dark:text-white">Saved!</p>
+        {isSuccess ? (
+          <CheckIcon className="size-8 text-green-600" />
+        ) : (
+          <XMarkIcon className="size-8 text-red-600" />
+        )}
+
+        <p className="light:text-black dark:text-white">{message}</p>
       </div>
     </Toast>
   );
@@ -111,6 +109,7 @@ export default function SettingsPage() {
 
   const [isEditable, setIsEditable] = useState<boolean>();
   const [showSaved, setShowSaved] = useState<boolean>(() => false);
+  const [isSaved, setIsSaved] = useState<boolean>(() => false);
 
   useEffect(() => {
     invoke<AppSettings>("get_settings").then((settings) => {
@@ -129,8 +128,9 @@ export default function SettingsPage() {
 
   async function saveSettings(settings: AppSettings): Promise<void> {
     setShowSaved((prev) => !prev);
-    await invoke("set_settings", { newSettings: settings });
+    const saved = await invoke<boolean>("set_settings", { newSettings: settings });
     setIsEditable(false);
+    setIsSaved(saved);
     setTimeout(() => setShowSaved((prev) => !prev), 2000);
   }
 
@@ -155,7 +155,7 @@ export default function SettingsPage() {
           selected={appSettings.model}
         />
       </div>
-      {showSaved && <Saved />}
+      {showSaved && <Saved isSuccess={isSaved} message={isSaved ? "Saved!" : "Not saved..."}/>}
     </div>
   );
 }
