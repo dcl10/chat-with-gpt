@@ -9,6 +9,7 @@ use tauri::Manager;
 
 mod chatgpt;
 mod constants;
+mod errors;
 mod models;
 mod settings;
 
