@@ -94,7 +94,7 @@ function APIKeySet({ onSetEditable }: { onSetEditable: any }) {
 
 function Saved() {
   return (
-    <Toast className="bg-transparent border-0 shadow-none">
+    <Toast className="bg-green-200 border-0 shadow-none fixed inset-x-auto bottom-4">
       <div className="flex space-x-2 items-center justify-center">
         <CheckIcon className="size-8 text-green-600" />
         <p className="light:text-black dark:text-white">Saved!</p>
@@ -135,7 +135,7 @@ export default function SettingsPage() {
   }
 
   return (
-    <div className="sm:p-5 lg:p-20 space-y-2">
+    <div className="sm:p-5 lg:p-20 space-y-2 relative">
       <TitleBar title={"Settings"} />
       <div className="pt-20"></div>
       <div className="space-y-2 flex flex-col">
