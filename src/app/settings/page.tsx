@@ -2,11 +2,11 @@
 
 import { useEffect, useState } from "react";
 import { invoke } from "@tauri-apps/api/tauri";
-import BackButton from "@/components/ui/back-button";
 import { AppSettings } from "@/lib/types";
 import { Label, Select, Button } from "flowbite-react";
 import { MODEL_CHOICES } from "@/lib/constants";
 import { useRouter } from "next/navigation";
+import TitleBar from "@/components/ui/title-bar";
 
 function EditAPIKey({
   handleAPIKeyChange,
@@ -127,9 +127,9 @@ export default function SettingsPage() {
 
   return (
     <div className="sm:p-5 lg:p-20 space-y-2">
-      <BackButton onClick={goBack} />
+      <TitleBar title={"Settings"} />
+      <div className="pt-20"></div>
       <div className="space-y-2 flex flex-col">
-        <h1 className="text-3xl font-semibold pb-4">Settings</h1>
         {isEditable ? (
           <EditAPIKey
             handleAPIKeyChange={handleAPIKeyChange}
