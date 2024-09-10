@@ -1,3 +1,5 @@
+import Markdown from "react-markdown";
+
 export default function ChatBubble({
   text,
   isUser,
@@ -11,7 +13,7 @@ export default function ChatBubble({
   return (
     <div className="flex">
       <div className={`${bgColor} ${position} max-w-screen-sm rounded-lg`}>
-        <p className="dark:text-white light:text-black px-4 py-0.5">{text}</p>
+        <Markdown className={"dark:text-white light:text-black px-4 py-0.5"}>{text}</Markdown>
       </div>
     </div>
   );
