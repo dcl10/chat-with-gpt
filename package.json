@@ -19,7 +19,7 @@
     "flowbite": "^2.5.1",
     "flowbite-react": "^0.10.1",
     "lucide-react": "^0.428.0",
-    "next": "14.2.6",
+    "next": "^14.2.12",
     "openai": "^4.56.1",
     "react": "^18",
     "react-dom": "^18",
