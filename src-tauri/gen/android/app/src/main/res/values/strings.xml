@@ -1,0 +1,4 @@
+<resources>
+    <string name="app_name">chat-with-gpt</string>
+    <string name="main_activity_title">chat-with-gpt</string>
+</resources>
