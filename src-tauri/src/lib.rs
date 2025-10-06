@@ -13,7 +13,8 @@ mod errors;
 mod models;
 mod settings;
 
-fn main() {
+#[cfg_attr(mobile, tauri::mobile_entry_point)]
+pub fn run() {
     tauri::Builder::default()
         .setup(|app| {
             let config = app.config();
