@@ -5,7 +5,7 @@ import TitleBar from "@/components/ui/title-bar";
 import ChatBubble from "@/components/ui/chat-bubble";
 import { AppSettings, ChatGptResponse, Message } from "@/lib/types";
 import { useEffect, useState } from "react";
-import { invoke } from "@tauri-apps/api/tauri";
+import { invoke } from "@tauri-apps/api/core";
 import { ChatRole } from "@/lib/enums";
 
 export default function ChatPage() {
@@ -29,15 +29,15 @@ export default function ChatPage() {
       });
       response.choices.map((choice) => messages.push(choice.message));
     } catch (error: any) {
-      messages.push({content: error, role: ChatRole.Assistant})
+      messages.push({ content: error, role: ChatRole.Assistant });
     }
-    return messages
+    return messages;
   }
 
   async function handleChatInput(message: Message) {
-    setChatHistory(prev => [...prev, message]);
+    setChatHistory((prev) => [...prev, message]);
     const messages = await chatToApi(message);
-    setChatHistory(prev => [...prev, ...messages])
+    setChatHistory((prev) => [...prev, ...messages]);
   }
 
   return (

@@ -1,7 +1,7 @@
 "use client";
 
 import { useEffect, useState } from "react";
-import { invoke } from "@tauri-apps/api/tauri";
+import { invoke } from "@tauri-apps/api/core";
 import { AppSettings } from "@/lib/types";
 import { Label, Select, Button } from "flowbite-react";
 import { MODEL_CHOICES } from "@/lib/constants";
@@ -83,11 +83,21 @@ function APIKeySet({ onSetEditable }: { onSetEditable: any }) {
   );
 }
 
-function Saved({ isSuccess, message }: { isSuccess: boolean; message: string; }) {
+function Saved({
+  isSuccess,
+  message,
+}: {
+  isSuccess: boolean;
+  message: string;
+}) {
   const successBg = "bg-green-200";
   const failBg = "bg-red-200";
   return (
-    <Toast className={`${isSuccess ? successBg : failBg} border-0 shadow-none fixed inset-x-auto bottom-4`}>
+    <Toast
+      className={`${
+        isSuccess ? successBg : failBg
+      } border-0 shadow-none fixed inset-x-auto bottom-4`}
+    >
       <div className="flex space-x-2 items-center justify-center">
         {isSuccess ? (
           <CheckIcon className="size-8 text-green-600" />
@@ -128,7 +138,9 @@ export default function SettingsPage() {
 
   async function saveSettings(settings: AppSettings): Promise<void> {
     setShowSaved((prev) => !prev);
-    const saved = await invoke<boolean>("set_settings", { newSettings: settings });
+    const saved = await invoke<boolean>("set_settings", {
+      newSettings: settings,
+    });
     setIsEditable(false);
     setIsSaved(saved);
     setTimeout(() => setShowSaved((prev) => !prev), 2000);
@@ -155,7 +167,12 @@ export default function SettingsPage() {
           selected={appSettings.model}
         />
       </div>
-      {showSaved && <Saved isSuccess={isSaved} message={isSaved ? "Saved!" : "Not saved..."}/>}
+      {showSaved && (
+        <Saved
+          isSuccess={isSaved}
+          message={isSaved ? "Saved!" : "Not saved..."}
+        />
+      )}
     </div>
   );
 }

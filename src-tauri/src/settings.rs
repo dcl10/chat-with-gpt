@@ -1,7 +1,7 @@
 use crate::constants::APPSETTINGS_NAME;
 use serde::{Deserialize, Serialize};
 use std::{fs, sync::Mutex};
-use tauri::{api::path as tauri_path, State};
+use tauri::{Manager::path as tauri_path, State};
 
 #[derive(Serialize, Deserialize, Default, Debug, Clone)]
 #[serde(rename_all = "camelCase")]
