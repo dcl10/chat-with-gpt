@@ -14,13 +14,13 @@ mod settings;
 pub fn run() {
     tauri::Builder::default()
         .setup(|app| {
-            let config = app.config();
+            let handle = app.handle();
             let app_settings;
-            if AppSettings::config_file_exists(&config) {
-                app_settings = AppSettings::from_file(&config);
+            if AppSettings::config_file_exists(&handle) {
+                app_settings = AppSettings::from_handle(&handle);
             } else {
-                AppSettings::new_config_file(&config);
-                app_settings = AppSettings::from_file(&config);
+                AppSettings::new_config_file(&handle);
+                app_settings = AppSettings::from_handle(&handle);
             }
             app.manage(Mutex::new(app_settings));
             Ok(())
