@@ -43,7 +43,7 @@ export default function ChatPage() {
         })
         .catch(() => console.log("No permission for push notifications"));
     } else {
-      console.log("No permission for push notifications");
+      console.log("No messages or last message not from assistant");
     }
   }, [chatHistory]);
 
@@ -65,8 +65,12 @@ export default function ChatPage() {
 
   async function handleChatInput(message: Message) {
     setChatHistory((prev) => [...prev, message]);
-    const messages = await chatToApi(message);
-    setChatHistory((prev) => [...prev, ...messages]);
+    try {
+      const messages = await chatToApi(message);
+      setChatHistory((prev) => [...prev, ...messages]);
+    } catch (error) {
+      console.error(error);
+    }
   }
 
   return (
