@@ -30,6 +30,7 @@ pub fn run() {
             set_settings,
             chat_to_model
         ])
+        .plugin(tauri_plugin_notification::init())
         .run(tauri::generate_context!())
         .expect("error while running tauri application");
 }
