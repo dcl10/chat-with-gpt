@@ -7,6 +7,7 @@ import { AppSettings, ChatGptResponse, Message } from "@/lib/types";
 import { useEffect, useState } from "react";
 import { invoke } from "@tauri-apps/api/core";
 import { ChatRole } from "@/lib/enums";
+import useAppVisibility from "@/lib/hooks";
 import {
   checkNotificationPermission,
   requestNotificationPermission,
@@ -16,6 +17,8 @@ import {
 export default function ChatPage() {
   const [chatHistory, setChatHistory] = useState<Message[]>([]);
   const [appSettings, setAppSettings] = useState<AppSettings>();
+
+  const isVisible = useAppVisibility();
 
   useEffect(() => {
     invoke<AppSettings>("get_settings").then((settings) =>
@@ -28,11 +31,13 @@ export default function ChatPage() {
     if (message && message.role !== ChatRole.User) {
       checkNotificationPermission()
         .then((ok) => {
-          if (ok) {
+          if (ok && !isVisible) {
             sendPushNotification("Chat with GPT", message.content);
           } else {
             requestNotificationPermission().then((ok) => {
-              if (ok) sendPushNotification("Chat with GPT", message.content);
+              if (ok && !isVisible) {
+                sendPushNotification("Chat with GPT", message.content);
+              }
             });
           }
         })
