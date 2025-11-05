@@ -7,6 +7,11 @@ import { AppSettings, ChatGptResponse, Message } from "@/lib/types";
 import { useEffect, useState } from "react";
 import { invoke } from "@tauri-apps/api/core";
 import { ChatRole } from "@/lib/enums";
+import {
+  checkNotificationPermission,
+  requestNotificationPermission,
+  sendPushNotification,
+} from "@/lib/notifications";
 
 export default function ChatPage() {
   const [chatHistory, setChatHistory] = useState<Message[]>([]);
@@ -17,6 +22,25 @@ export default function ChatPage() {
       setAppSettings(settings)
     );
   }, []);
+
+  useEffect(() => {
+    let message = chatHistory[chatHistory.length - 1];
+    if (message && message.role !== ChatRole.User) {
+      checkNotificationPermission()
+        .then((ok) => {
+          if (ok) {
+            sendPushNotification("Chat with GPT", message.content);
+          } else {
+            requestNotificationPermission().then((ok) => {
+              if (ok) sendPushNotification("Chat with GPT", message.content);
+            });
+          }
+        })
+        .catch(() => console.log("No permission for push notifications"));
+    } else {
+      console.log("No permission for push notifications");
+    }
+  }, [chatHistory]);
 
   async function chatToApi(message: Message): Promise<Message[]> {
     let messages: Message[] = [];
